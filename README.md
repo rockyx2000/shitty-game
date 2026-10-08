@@ -20,14 +20,18 @@ npm run dev        # http://localhost:3000 (認証はダミーユーザー)
    npx wrangler d1 create shitty-game
    npm run db:remote
    ```
+   `d1 create` の対話プロンプトの注意:
+   - 「Wrangler に wrangler.jsonc へ追記させるか」は **No** にする(Yes だと別名のバインディングが重複追加される。追記されたら `binding` が `DB` 以外のエントリを削除する)。
+     コードは `env.DB` を参照するので、バインディング名は必ず `DB`。
+   - 「ローカル開発でリモートのリソースに接続するか」は **N**(Yes だとローカル開発が本番D1を書き換える)。
 2. スコア署名用シークレットを登録
    ```bash
    openssl rand -hex 32 | npx wrangler secret put GAME_SECRET
    ```
-3. `npm run deploy` (初回デプロイで Worker の URL / ドメインが決まる)
+3. `npm run deploy` (`wrangler.jsonc` の `routes` で `game.example.com` をカスタムドメインとして割り当てる。`workers.dev` は無効)
 4. Zero Trust ダッシュボードで設定
    - Settings > Authentication > Login methods に **Google** を追加
-   - Access > Applications > Add > Self-hosted: デプロイ先ドメインを指定し、許可ポリシー(例: メールドメイン)を作成
+   - Access > Applications > Add > Self-hosted: `game.example.com` を指定し、許可ポリシー(例: メールドメイン)を作成
    - 作成したアプリの **Application Audience (AUD) Tag** と、チームドメイン(`xxx.cloudflareaccess.com`)を
      `wrangler.jsonc` の `CF_ACCESS_AUD` / `CF_ACCESS_TEAM_DOMAIN` に設定して再デプロイ
 
