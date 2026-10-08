@@ -1,0 +1,23 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "shitty-game",
+  "main": ".open-next/worker.js",
+  "compatibility_date": "2026-10-01",
+  "compatibility_flags": ["nodejs_compat", "global_fetch_strictly_public"],
+  "assets": { "directory": ".open-next/assets", "binding": "ASSETS" },
+  "vars": {
+    // Zero Trust > Settings > Custom Pages 付近に表示される team name。例: myteam.cloudflareaccess.com
+    "CF_ACCESS_TEAM_DOMAIN": "",
+    // Access アプリケーションの Application Audience (AUD) Tag
+    "CF_ACCESS_AUD": ""
+  },
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "shitty-game",
+      // `wrangler d1 create shitty-game` で出力された ID に置き換える
+      "database_id": "00000000-0000-0000-0000-000000000000",
+      "migrations_dir": "migrations"
+    }
+  ]
+}
